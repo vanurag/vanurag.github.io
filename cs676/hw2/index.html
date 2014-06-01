@@ -1,0 +1,99 @@
+<html>
+<head>
+<style type = "text/css">
+body
+{
+	margin-left:50px;
+	margin-right:30px;
+}
+
+img
+{
+	margin-left:10px;
+	margin-right:10px;
+	margin-top:10px;
+	margin-bottom:5px;
+}
+
+</style>
+</head>
+<body bgcolor="#E6E6FA">
+
+<h1><center>HomeWork II: Robust Image Classification using Bag of Words</center></h1>
+<h2><center>Vempati Anurag Sai<br />Y9645<br /></center></h2>
+
+<h3><a href="Y9645_hw2.zip">Y9645_hw2.zip</a></h3>
+
+<h3>PART A: <i>Computing SIFT and Mapping to Visual Words -</i></h3>
+
+<p><font size="3" font face="georgia">
+
+<center>
+<a href="partA/bengal_tiger3.JPEG"><img src="partA/bengal_tiger3.JPEG" width="300" border="1"/> </a>
+<a href="partA/most_dominant_word.jpg"><img src="partA/most_dominant_word.jpg" width="300" border="1"/> </a>
+</center>
+<center><pre>bengal_tiger3      <font size="3"></font>	      Most dominant word</pre></center>
+
+<center>
+<a href="partA/hist.jpg"><img src="partA/hist.jpg" width="500" border="1"/> </a>
+<a href="partA/colour_coded_bengal_tiger.JPG"><img src="partA/colour_coded_bengal_tiger.JPG" width="300" border="1"/> </a>
+</center>
+<center><pre>Histogram of word count              	                      Colour coded image</pre></center>
+
+<p>Dense SIFT features have been used.Each feature descriptor is assigned to it's nearest word. And then histogram is obtained by performing a word count over the entire vocabulary.Colour coded word is obtained by assigning a unique colour to each word. Though it's to cluttered, it pretty much gives the idea of various kinds of features that map to the same word.</p>
+
+</p>
+
+
+<h3>PART B: <i>Classification -</i></h3>
+
+<p><font size="3" font face="georgia">
+
+<h5>Multi-Class Classifier</i></h5>
+<center>
+<a href="partB/Accuracies.jpg"><img src="partB/Accuracies.jpg" width="500" border="1"/> </a>
+</center>
+<font size="2"><center>Accuracies Vs. kernel choice for all three classes </center></font>
+
+<center>
+<a href="partB/P.jpg"><img src="partB/P.jpg" width="300" border="1"/> </a>
+<a href="partB/R.jpg"><img src="partB/R.jpg" width="300" border="1"/> </a>
+<a href="partB/F1.jpg"><img src="partB/F1.jpg" width="300" border="1"/> </a>
+</center>
+<center><pre>Precision Vs. kernel choice	       Recall Vs. kernel choice	    		F1 score Vs. kernel choice</pre></center>
+
+<p>F1 score = 2*PR/(P+R), where P = Precision and R = Recall. It is used to quantify the performance of a binary classifier. Linear kernel gives a better performance over the rest.</p>
+
+</p>
+
+
+<p><font size="3" font face="georgia">
+
+<h5>Binary Classifiers</i></h5>
+
+<center>
+<a href="partB/PR_t_vs_r.jpg"><img src="partB/PR_t_vs_r.jpg" width="350" border="1"/> </a>
+<a href="partB/PR_c_vs_r.jpg"><img src="partB/PR_c_vs_r.jpg" width="350" border="1"/> </a>
+<a href="partB/PR_g_vs_r.jpg"><img src="partB/PR_g_vs_r.jpg" width="350" border="1"/> </a>
+</center>
+<center><pre>Tiger Vs. rest	                     Coffee_cup Vs. rest	        	    	Giraffe Vs. rest</pre></center>
+<font size="2"><center>Precision-Recall curves for various choice of thresholds </center></font>
+
+</p>
+
+<br /><br />
+<p>
+<strong>REFERENCES:</strong><br /><br />
+[1]	VL-feat Library.<br />
+[2]	SVM: MAtlab Inbuilt Library.<br />
+[3]	<a href="http://www.robots.ox.ac.uk/~vgg/share/practical-image-classification-code-only.tar.gz">Codes</a> from INRIA summer school on Computer Vision and Machine Learning, July 2012, organized at INRIA Grenoble in France.<br />
+<br /><br />
+<strong>RECOURCES:</strong><br /><br />
+<a href="results.zip">results.zip</a> - Contains SIFTS computed for the entire database. Refer to 'Readme' for details.
+<br /><br />
+</p>
+
+
+
+</body>
+</html>

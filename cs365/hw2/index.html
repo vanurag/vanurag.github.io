@@ -1,0 +1,118 @@
+<html>
+<head>
+<style type = "text/css">
+body
+{
+	margin-left:50px;
+}
+
+img
+{
+	margin-left:350px;
+}
+
+table
+{
+	margin-left:200px;
+}
+</style>
+</head>
+<body><font size="4">
+
+
+<h1>Assignment 2</h1>
+<h3><pre>Vempati Anurag Sai		Y9645<br />Aditi Krishn			10039</pre></h3>
+
+<h4><strong>PART A:</strong></h4>
+
+<p> Matlab Code <a href="codes/Display_Digit_Clusters.m">Display_Digit_Clusters.m</a> for constructing Isomap of any set of digits.</p>
+
+<h4>A1. 2-D Isomap model for the first 2000 samples of the MNIST training set using Euclidean distance :</h4>
+<h4><pre><i>(i) Digits '1' and '7' -</i></pre></h4>
+<img border="0" src="img/L2d_17.jpg" align="center" width="471" height="342" />
+<h4><pre><i>(ii) Digits '4' and '9' -</i></pre></h4>
+<img border="0" src="img/L2d_49.jpg" align="center" width="471" height="342" />
+<h4><pre><i>(iii) All the digits -</i></pre></h4>
+<img border="0" src="img/L2d_all.jpg" align="center" width="471" height="342" />
+<h4><pre><i>(iv) Number '1' -</i></pre></h4>
+<p> Matlab Code <a href="codes/Single_Digit_Isomap.m">Single_Digit_Isomap.m</a> for constructing Isomap of any single digit.</p><br />
+<img border="0" src="img/L2d_1.jpg" align="center" width="471" height="342" />
+<p>
+Variation in thickness from top to bottom and increase in tilt from left to right can be seen in this image.
+</p>
+
+<h4>A2. 2-D Isomap model for the first 2000 samples of the MNIST training set using Tangent distance :</h4>
+<h4><pre><i>(i) Digits '1' and '7' -</i></pre></h4>
+<img border="0" src="img/td17.jpg" align="center" width="471" height="342" />
+<h4><pre><i>(ii) Digits '4' and '9' -</i></pre></h4>
+<img border="0" src="img/td49.jpg" align="center" width="471" height="342" />
+<h4><pre><i>(iii) All the digits -</i></pre></h4>
+<img border="0" src="img/td_all.jpg" align="center" width="471" height="342" />
+<h4><pre><i>(iv) Number '7' -</i></pre></h4>
+<img border="0" src="img/td7.jpg" align="center" width="569" height="413" />
+<p>
+At the top all the 7s have a horizontal bar. Increase in tilt from left to right can also be seen in this image.
+</p>
+
+<h4>A3. Hindi Numerals :</h4>
+<img border="0" src="img/HN1.jpg" align="center" width="565" height="410" />
+<img border="0" src="img/HN2.jpg" align="center" width="565" height="410" />
+<img border="0" src="img/HN3.jpg" align="center" width="565" height="410" />
+
+<h4><strong>PART B:</strong></h4>
+
+<p> Matlab Code <a href="codes/Discovering_Robot_Motion_DOF.m">Discovering_Robot_Motion_DOF.m</a> for constructing Isomap of 200 random images
+of Aldebaran Nao / 500 random images of 2 link robot arms / 200 images of robot arms carrying a box.</p>
+
+<h4>B1. Residual error curve obtained by applying Isomap on 200 images of humanoid robot, the Aldebaran Nao :</h4>
+<img border="0" src="img/res_variance_nao.jpg" align="center" width="471" height="342" />
+<p>The intrinsic dimensionality of the data is estimated by looking for the 'elbow' at which this curve ceases to decrease significantly with added dimensions.</p>
+<p>
+<strong>Justification:</strong> Nao has only 4 degrees of freedom(2 for the shoulder and 2 for the elbow). It can produce only Yaw and Pitch motions at both 
+shoulder and elbow (Or atleast the input data doesn't have any roll sequences captured). It cannot produce the Roll motion.
+</p>
+
+<h4>B2. Residual error curve obtained by applying Isomap on 500 random images of 2 link robot arms :</h4>
+<img border="0" src="img/res_variance_random_arms.jpg" align="center" width="471" height="342" />
+<p>
+<strong>Justification:</strong> 
+</p>
+
+<h4>B3. Solution for the numerical question :</h4>
+<img border="0" src="img/B3.jpg" align="center" width="565" height="410" />
+
+<h4>B4. Residual error curve obtained by applying Isomap on 200 images of 2 link robot arms carrying a box:</h4>
+<img border="0" src="img/res_variance_arms_with_box.jpg" align="center" width="471" height="342" />
+<p>
+<strong>Justification:</strong> In the input images, the box is carried at a fixed height with respect to the base.
+If the lateral position of the box w.r.t the base of arm-1 is specified, we can exactly find out the angles theta1,theta2,theta3 and theta4 of
+the both robot arms. So, the only variable is the lateral postion of the box and hence the dimensionality of '1'.
+</p>
+
+<h3>RESOURCES :</h3>
+            <ol type='a'>
+                <li>
+                    Information on the algorithm: 
+                    <br/>
+                    Joshua B. Tenenbaum and Vin de Silva and John C. Langford, 
+                    <a href="http://web.mit.edu/cocosci/Papers/sci_reprint.pdf">
+                        A Global Geometric Framework for Nonlinear Dimensionality Reduction
+                    </a>, Science, v. 290, pp. 2319--2323, 2001.
+                    
+                </li>
+                <li>
+                    Matlab codes used: Isomap.m-for constructing an isomap and plotting it. tangent_d.m-to measure tangent distance.
+					L2_distance.m - to measure Euclidean distance. LoadDigit.m-to load image data from MNIST database.
+					LoadImageData.m-To load image data of any collection of pictures(ex-nao,robo arms).
+                </li>
+				<li>
+                    The data used are: 2000 handwritten images from MNIST database, images of Humanoid Robot(Nao), 2link Robot arm images.
+                </li>
+            </ol>
+
+			
+<p><a href="readme.txt">Read me</a> for more information.</p>
+<p><a href="codes">[CODES]</a>. Along with the ones obtained from the references mentioned above.</p>
+
+</body>
+</html>

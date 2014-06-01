@@ -1,0 +1,114 @@
+
+<html>
+<head>
+<style type = "text/css">
+body
+{
+	margin-left:50px;
+	margin-right:50px;
+}
+
+img
+{
+	margin-left:65px;
+	margin-right:65px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+</style>
+</head>
+<body bgcolor="#E6E6FA">
+
+<h1><center>Unsupervised Relation Extraction From Web</center></h1>
+<h4><center>Vempati Anurag Sai<br />Bhavishya Mittal<br /><i>Supervisor</i>: Dr. Amitabha Mukerjee</center></h4>
+
+<p><font size="4">
+<h3>Abstract:</h3>
+<p>Extracting knowledge from web is an important
+NLP problem. Since any information worthwhile is mostly of
+the SPO (Subject, Predicate and Object) form, we will be aiming
+to extract such tuples from the huge web data available today.
+We also aim to build a query module that can search for the
+most relevant tuple and return it. The framework involves three
+main modules: A relation extractor, Learning Module and a Query Module. 
+Dependency graph obtained from the Stanford
+parser is used to extract the tuples. An SVM is trained to learn
+to distinguish trustworthy tuples from the non-trustworthy to
+reduce the computational complexity involved in using a parser
+on each and every sentence. The classifier also helps in removal
+of noise which crept in due to the parser. Similar tuples are
+grouped together for obtaining a frequency count. During the
+query process, all the tuples with certain amount of overlap with
+the query are returned and ranked according to their relevance
+to the query.</p>
+
+<p>Some tuples extracted by the "relation exractor" module for input sentence <i>"The American Civil War, also known as the War between the States or simply the Civil War, was a civil war fought from 1861 to 1865 in the United States after several Southern slave states declared their secession and formed the Confederate States of America"</i>:</p>
+
+
+<center><a href="imgs/tuples_with_chunker2.png"><img src="imgs/tuples_with_chunker2.png" width="700"> </a></center>
+<center>Trusted and Untrusted tuples extracted by the "relation exractor"</center>
+<font size="2"><center>Click on the images for expanded view</center></font>
+
+<p>Some of the trsutworthy tuples identified by the classifier after training on the AIMed corpus with 1955 sentences from MEDLINE ab-
+stracts annotated with gene/protein names and protein-protein interactions:</p>
+
+<pre>
+('Injections', 'transmit', 'infections')
+('green tea', 'had', 'significant chemopreventive effects')
+('zinc deficiency', 'affects', 'cognitive development')
+('Exposure to paclitaxel for 8 h or less', 'produced', 'biphasic survival curves')
+('a low fat diet', 'reduces', 'DDT bioaccumulation')
+('Raman', 'comprised', 'a near infrared laser')
+('asthmatic patients', 'contained', 'high levels of IgE antibody')
+('poxvirus', 'causes', 'tumors')
+('The gastrointestinal tract of numerous animal species', 'contains', 'melatonin')
+('osteoblasts', 'secrete', 'the primary endocrine source')
+('A58', 'disrupts', 'reverse transcription')
+('PPAR alpha agonists', 'repress', 'human fibrinogen gene expression')
+('Human coronary artery', 'expressed', 'MCP-1 mRNA')
+('dihydropyrimidine dehydrogenase', 'affect', 'tumor sensitivity and resistance')
+('the use of dexamethasone', 'reduce', 'delivery of chemotherapeutic agents')
+('The beta-lactamase characterized from strain SLO74', 'named', 'OCH-1')
+</pre>
+
+<p>Some of the top results for the query <strong>WHAT energize kinases</strong>. Notice that the system returned tuples with 'stimulate' in the relation field because it's a synonym of 'energize':</p>
+
+<center><a href="imgs/query4.png"><img src="imgs/query4.png" width="900"> </a></center>
+<center>Query results</center>
+<font size="2"><center>Click on the images for expanded view</center></font>
+
+<p>Some of the top results for the query <strong>WHAT cause WHAT</strong>. Notice that the system returned tuples with 'induce', 'makes' and
+'have' in the relation field because they are all synonyms of 'cause':</p>
+
+<center><a href="imgs/query5.png"><img src="imgs/query5.png" width="900"> </a></center>
+<center>Query results</center>
+<font size="2"><center>Click on the images for expanded view</center></font>
+
+
+<p><font size="4">
+<h3>Documentation:</h3>
+<pre><a href="proposal.pdf">PROPOSAL</a>    <a href="slides.pdf">PRESENTATION</a>    <a href="poster.pdf">POSTER</a>    <a href="report.pdf">FINAL REPORT</a>    <a href="code.zip">CODES</a></pre>
+</p>
+
+
+</p>
+
+<h3>REFERENCES:</h3>
+<ol>
+<li> Banko, Michele, et al. "Open Information Extraction from the Web."
+IJCAI. Vol. 7. 2007.
+<li>  Fader, Anthony, Stephen Soderland, and Oren Etzioni. Identifying relations for open information extraction. Proceedings of the Conference on Empirical Methods in Natural Language Processing. Association
+for Computational Linguistics, 2011.
+<li> Dan Klein and Christopher D. Manning. 2003. Accurate Unlexicalized
+Parsing. Proceedings of the 41st Meeting of the Association for
+Computational Linguistics, pp. 423-430.
+<li> Marie-Catherine de Marneffe, Bill MacCartney and Christopher D.
+Manning. 2006. Generating Typed Dependency Parses from Phrase
+Structure Parses. In LREC 2006.
+<li> Jython libraries for Stanford Parser by Viktor Pekar. https://github.com/vpekar/stanford-parser-in-jython
+<li> Python implementation of Dijkstras algorithm by David Eppstein UC Irvine, 4 April 2002. http://code.activestate.com/recipes/577343-dijkstras-algorithm-for-shortest-paths
+<li> ftp://ftp.cs.utexas.edu/pub/mooney/bio-data/ courtesy: Raymond J.Mooney, University of Texas at Austin
+<br /><br /><br />
+</body>
+</html>

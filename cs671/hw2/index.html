@@ -1,0 +1,188 @@
+
+<!-- saved from url=(0042)http://home.iitk.ac.in/~vanurag/cs671/hw2/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+body
+{
+	margin-left:50px;
+	margin-right:30px;
+}
+
+img
+{
+	margin-left:10px;
+	margin-right:10px;
+	margin-top:10px;
+	margin-bottom:5px;
+}
+
+</style>
+<style type="text/css"></style></head>
+<body bgcolor="#E6E6FA">
+
+<h1><center>HomeWork II: N-gram based Language Models</center></h1>
+<h2><center>Vempati Anurag Sai<br>Y9227645<br></center></h2>
+
+<h3><a href="http://home.iitk.ac.in/~vanurag/cs671/hw2/Y9227645_hw2.zip">Y9227645_hw2.zip</a></h3>
+
+<h3>PART A:</h3>
+<h3><i>Word boundary segmentation -</i></h3>
+
+<p><font size="4" font="" face="georgia">
+
+</font></p><p><font size="4" font="" face="georgia">Two Telugu corpora (Blog Texts and Newspapers) are merged for braoder content in the corpus. First the source, type and topic arguments provided in the corpus are removed. All the alpha-numerics, special symbols and foreign language words (present in the corpus due to imperfection of the language detector, as mentioned) are removed. Finally, the occurences of all the unique Telugu unigrams and bigrams in the corpus are extracted and these are used to train the probabilities of Norvig's ngrams code.</font></p><font size="4" font="" face="georgia">
+
+<p>The entire code is written in bash script using following commands:</p>
+<ul>
+<li>grep/egrep: For regular expression matching.</li>
+<li>sed: for removal of alpha-numerics and special symbols.</li>
+<li>tr: removing the additional spaces and arranging words in individual lines.</li>
+<li>sort: All the Telugu words grouped together after sort. So, removal of _ALL_ the foreign language words that crept into the corpus was possible.</li>
+<li>uniq -c: For unique word frequencies.</li>
+</ul>
+
+<p></p>
+
+
+<h3><i>Test Set -</i></h3>
+
+<p><font size="4" font="" face="georgia">
+
+</font></p><p><font size="4" font="" face="georgia">A test set containing space removed sentences (tel_wordseg.txt) is prepared to evaluate the performance. This contains roughly 1000 words in total. These sentences were not used to update unigram and bigram word counts during the training phase. tel_wordseg_gt.txt is the corresponding ground-truth file.</font></p><font size="4" font="" face="georgia">
+
+<h3><i>ngrams Parameters Used -</i></h3>
+
+<pre>L (maximum length of first word that is considered while segmenting a sentence) is set as 40.
+Maximum recursion limt in python is set to 3000 so that lengthy sentence segmentation is feasible.
+</pre>
+
+<h3><i>Results -</i></h3>
+
+<p>
+
+</p><pre>Using just unigram probabilities:</pre>
+<i>Precision</i>: &nbsp; 91.620%<br>
+<i>Recall</i>: &nbsp; &nbsp; &nbsp; 68.106%<br>
+<i>F-Score</i>: &nbsp; &nbsp; 78.132%
+
+<pre>Using bigram probabilities:</pre>
+<i>Precision</i>: &nbsp; 97.765%<br>
+<i>Recall</i>: &nbsp; &nbsp; &nbsp; 84.622%<br>
+<i>F-Score</i>: &nbsp; &nbsp; 90.720%
+
+<p></p>
+
+
+<br>
+
+<h3>PART B:</h3>
+<h3><i>Spell Checker -</i></h3>
+
+<p>A new function "update_edit_count" is added to ngrams distribution to get the count of single edits from the spelling errors file spellin_errors.txt. The occurences of various edits can be seen in tel_count_1edit.txt. As I had only about 300 (word,misspelling) pairs for obtaining the edits count file, the frequencies are very small. Would be much better if more data is available.</p>
+
+<p></p>
+
+<pre><font size="3">
+def update_edit_count(wrong, right, d=2): 
+    "Update a dict of {edit: count} pairs where count is the number of times that particular edit has been applied" 
+    count_dict = {}
+    def editsR(hd, tl, d, edits): 
+        def ed(L,R):
+		return edits+[R+'|'+L] 
+	global flag
+        C = hd+tl 
+        if C == right:
+	    for e in edits:
+		    if e not in count_dict: count_dict[e] = 2 
+		    else: count_dict[e] += 1
+	    return
+        if d &lt;= 0: return 
+        extensions = [hd+c for c in tel_alphabet if hd+c in PREFIXES] 
+        p = (hd[-3:] if hd else '&lt;') ## previous character 
+        ## Insertion 
+        for h in extensions: 
+            editsR(h, tl, d-1, ed(p+h[-3:], p)) 
+        if not tl: return 
+        ## Deletion 
+        editsR(hd, tl[3:], d-1, ed(p, p+tl[0:3])) 
+        for h in extensions: 
+            if h[-3:] == tl[0:3]: ## Match 
+                editsR(h, tl[3:], d, edits) 
+            else: ## Replacement 
+                editsR(h, tl[3:], d-1, ed(h[-3:], tl[0:3])) 
+        ## Transpose 
+        if len(tl)&gt;=6 and tl[0:3]!=tl[3:6] and hd+tl[3:6] in PREFIXES: 
+            editsR(hd+tl[3:6], tl[0:3]+tl[6:], d-1, 
+                   ed(tl[3:6]+tl[0:3], tl[0:6])) 
+    ## Body of edits: 
+    editsR('', wrong, d, []) 
+    return count_dict
+</font></pre><font size="3">
+
+<p><font size="4" font="" face="georgia">The function "edits" is altered to accomodate telugu script. +1 Smoothing is applied on the unigram frequencies to get the corresponding probabilities. Phonet data was not provided with the Telugu language distribution of aspell. So, I haven't implemented that part yet!</font></p><font size="4" font="" face="georgia">
+
+<pre><font size="3">
+def edits(word, d=2): 
+    "Return a dict of {correct: edit} pairs within d edits of word." 
+    results = {} 
+    def editsR(hd, tl, d, edits): 
+        def ed(L,R): return edits+[R+'|'+L] 
+        C = hd+tl 
+        if C in tel_Pw: 
+            e = '+'.join(edits) 
+            if C not in results: results[C] = e 
+            else: results[C] = max(results[C], e, key=Pedit) 
+        if d &lt;= 0: return 
+        extensions = [hd+c for c in tel_alphabet if hd+c in PREFIXES] 
+        p = (hd[-3:] if hd else '&lt;') ## previous character 
+        ## Insertion 
+        for h in extensions: 
+            editsR(h, tl, d-1, ed(p+h[-3:], p)) 
+        if not tl: return 
+        ## Deletion 
+        editsR(hd, tl[3:], d-1, ed(p, p+tl[0:3])) 
+        for h in extensions: 
+            if h[-3:] == tl[0:3]: ## Match 
+                editsR(h, tl[3:], d, edits) 
+            else: ## Replacement 
+                editsR(h, tl[3:], d-1, ed(h[-3:], tl[0:3])) 
+        ## Transpose 
+        if len(tl)&gt;=2 and tl[0:3]!=tl[3:6] and hd+tl[3:6] in PREFIXES: 
+            editsR(hd+tl[3:6], tl[0:3]+tl[6:], d-1, 
+                   ed(tl[3:6]+tl[0:3], tl[0:6])) 
+    ## Body of edits: 
+    editsR('', word, d, []) 
+    return results 
+</font></pre><font size="3">
+
+<p><font size="4" font="" face="georgia">To compare the my results against those recommended by aspell-0.60, I have compiled the aspell's telugu distribution with the telugu wordlist I have used in the assignment. A test set with around 100 sentences with misspelled words is collected from the arhives of "AndhraBhoomi" newspaper. The test set contains text from various categories like sports, politics etc. The performance of our spell checker, aspell and the ground truth can be seen in "output_on_testset.txt"</font></p><font size="4" font="" face="georgia">
+
+<h3>Observations:</h3>
+Misspelled sentence: తెల్లవారు జామున మైదానంలోకి వెళ్లి మూత్ర విసర్జన చేస్తూ కేరింతలు కిట్టారు <br>
+Unigram Output: తెల్లవారు జామున మైదానంలోకి వెళ్లి మూత్ర విసర్జన చేస్తూ కేరింతలు కట్టారు <br>
+Bigram Output: తెల్లవారు జామున మైదానంలోకి వెళ్లి మూత్ర విసర్జన చేస్తూ కేరింతలు కొట్టారు <br>
+Misspelled word: కిట్టారు (This isn't a Telugu word)<br>
+Unigram correction: కట్టారు (కేరింతలు కట్టారు is equivalent to 'tied cheers' in English. Though the individual words make sense, the sentence as a whole doesn't) <br>
+Bigram correction: కొట్టారు (కేరింతలు కొట్టారు is equivalent to 'cheered' in English.) <br>
+The clear advantage of bigram model being able to capture the context can be seen in this example.
+</p>
+
+<p><font size="4" font="" face="georgia">
+
+</font></p><h1><font size="4" font="" face="georgia">Resources -</font></h1><font size="4" font="" face="georgia">
+<a href="http://home.iitk.ac.in/~vanurag/cs671/hw2/tel_wordseg.txt">Test Set</a><br>
+<a href="http://home.iitk.ac.in/~vanurag/cs671/hw2/tel_wordseg_gt.txt">Ground-Truth corresponding to the test set</a><br>
+<a href="http://home.iitk.ac.in/~vanurag/cs671/hw2/tel_wordseg_result_unigram.txt">Word Segmentation using unigram frequencies</a><br>
+<a href="http://home.iitk.ac.in/~vanurag/cs671/hw2/tel_wordseg_result_bigram.txt">Word Segmentation using bigram frequencies</a><br>
+<a href="http://home.iitk.ac.in/~vanurag/cs671/hw2/tel_count_1edit.txt">Single edits count file</a><br>
+<a href="http://home.iitk.ac.in/~vanurag/cs671/hw2/output_on_testset.txt">Performance of spell checker</a><br>
+<br>
+
+<h3>References -</h3>
+Chapter 14 of _Beautiful Data_ by Peter Norvig: Natural Language Corpus Data [<a href="http://norvig.com/ngrams/ch14.pdf">http://norvig.com/ngrams/ch14.pdf</a>].  Related code and data: [<a href="http://norvig.com/ngrams/">http://norvig.com/ngrams</a>]. <p>
+<br><br><br>
+</p>
+
+
+
+</font></font></font></font></font></font></font><div id="GOOGLE_INPUT_CHEXT_FLAG" style="display: none;" input="en-t-k0-und" input_stat="{&quot;mk&quot;:true}"></div><iframe frameborder="0" scrolling="no" style="background-color: transparent; border: 0px; display: none; box-sizing: content-box; width: 427px; height: 299px; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px 0px; z-index: 2147483640; margin: 0px; position: fixed;"></iframe><iframe frameborder="0" scrolling="no" style="background-color: transparent; border: 0px; box-sizing: content-box; width: 517px; height: 211px; box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 16px 0px; z-index: 2147483644; margin: 0px; position: fixed; top: 475px; left: 746px; display: none;"></iframe></body></html>

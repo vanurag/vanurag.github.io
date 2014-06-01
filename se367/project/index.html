@@ -1,0 +1,88 @@
+
+<html>
+<head>
+<style type = "text/css">
+body
+{
+	margin-left:50px;
+	margin-right:50px;
+}
+
+img
+{
+	margin-left:65px;
+	margin-right:65px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+</style>
+</head>
+<body bgcolor="#E6E6FA">
+
+<h1><center>Learning Visual Anticipation: A Top-Down Approach</center></h1>
+<h4><center>Vempati Anurag Sai<br /><i>Supervisor</i>: Dr. Amitabha Mukerjee</center></h4>
+
+<p><font size="4">
+<h3>Abstract:</h3>
+<p>This work aims at developing an anticipatory gaze
+model, in a top-down approach. In the past there have been many
+models that can track relevant objects from a video making use of
+computer vision. But one crucial difference is that, a human eye
+can learn to anticipate the trajectory of an object very quickly in
+an unsupervised fashion. A sportsperson knows the importance
+of trajectory estimation better than anyone else. For example,
+in cricket it is very crucial that the batsman estimates length,
+bounce and type (swing, spin etc.) of the delivery in a fraction
+of seconds. In a study by Land & McLeod, 2000 three skilled
+batsmen facing medium paced deliveries looked at the ball for
+the first 100-150ms of flight and then made a rapid glance (or
+saccade) at approximately 50-80% of the ball flight duration
+to the predicted ball bounce location. This kind of anticipation
+comes with prolonged training. We aim to build a computational
+model that could imitate the way humans learn to anticipate the
+trajectory of fast moving objects.</p>
+
+<p>We start of building a dataset for the training phase. The dataset consists of a ball bouncing off the walls and
+floor as viewed from different viewpoints. The ball's speed
+and release direction are randomly chosen with a swing/spin
+components incorporated in few of the videos. Then, for each video, the ball is segmented out and all relevant data is collected.
+The objective to learn the Transision matrix can then be framed as a Linear Regression problem. Now for a given test video, conditioned on the data collected till then, a Kalman Filter predicts the future location of the ball well in advance.</p>
+
+<h4>A sample video from the dataset:</h4>
+<center><iframe width="560" height="315" src="http://www.youtube.com/embed/Q-tRktgbiCE" frameborder="0" allowfullscreen></iframe></center>
+
+<h4>Predicted Trajectory:</h4>
+<center><iframe width="560" height="315" src="http://www.youtube.com/embed/psldAbFzlHk" frameborder="0" allowfullscreen></iframe>
+<p><font size="2">Predticted Trajectory in 'BLUE' and size in 'RED'. Shown 7X slower</p><br /><br /></center>
+
+<p><font size="4">
+<h3>Documentation:</h3>
+<pre><a href="proposal.html">PROPOSAL</a>    <a href="slides.pdf">PRESENTATION</a>    <a href="poster.pdf">POSTER</a>    <a href="report.pdf">FINAL REPORT</a>    <a href="code.zip">CODES</a></pre>
+</p>
+
+
+</p>
+
+<h3>REFERENCES:</h3>
+<ol>
+<li> Land, Michael F., and Peter McLeod. "From eye movements to actions:
+how batsmen hit the ball." Nature neuroscience 3.12 (2000): 1340-
+1345.
+<li> Sciutti, Alessandra, et al. "Anticipatory gaze in human-robot interactions."
+Gaze in HRI from modeling to communication" workshop at the
+7th ACM/IEEE international conference on human-robot interaction,
+Boston, Massachusetts, USA. 2012.
+<li> Perse, Matej, et al. "Physics-based modelling of human motion using
+kalman filter and collision avoidance algorithm." International Symposium
+on Image and Signal Processing and Analysis, ISPA05, Zagreb,
+Croatia. 2005
+<li> http://en.wikipedia.org/wiki/Kalman_filter
+<li> Thrun, Sebastian, et al. "Stanley: The robot that won the DARPA Grand
+Challenge." Journal of field Robotics 23.9 (2006): 661-692.
+<li> Horak, Fay B. "Postural orientation and equilibrium: what do we need
+to know about neural control of balance to prevent falls?." Age and
+ageing 35.suppl 2 (2006): ii7-ii11.
+<br /><br /><br />
+</body>
+</html>

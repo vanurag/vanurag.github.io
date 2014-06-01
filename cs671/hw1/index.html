@@ -1,0 +1,134 @@
+<html>
+<head>
+<style type = "text/css">
+body
+{
+	margin-left:50px;
+	margin-right:30px;
+}
+
+img
+{
+	margin-left:10px;
+	margin-right:10px;
+	margin-top:10px;
+	margin-bottom:5px;
+}
+
+</style>
+</head>
+<body bgcolor="#E6E6FA">
+
+<h1><center>HomeWork I: Morphological Structure Discovery</center></h1>
+<h2><center>Vempati Anurag Sai<br />Y9227645<br /></center></h2>
+
+<h3><a href="Y9227645_hw1.zip">Y9227645_hw1.zip</a></h3>
+
+<h3>PART A:</h3>
+<h3><i>Corpus Pruning Trials and Effects -</i></h3>
+
+<p><font size="4" font face="georgia">
+
+<p>Two Telugu corpora (Blog Texts and Newspapers) are merged for braoder content in the corpus. First the source, type and topic arguments provided in the corpus are removed. All the alpha-numerics, special symbols and foreign language words (present in the corpus due to imperfection of the language detector, as mentioned) are removed. Finally, the occurences of all the unique Telugu words in the corpus is sent as input to the Undivide++ which then gave the morphological analysis of the words. The entire code is written in bash script using following commands:</p>
+
+<ul>
+<li>grep/egrep: For regular expression matching.</li>
+<li>sed: for removal of alpha-numerics and special symbols.</li>
+<li>tr: removing the additional spaces and arranging words in individual lines.</li>
+<li>sort: All the Telugu words grouped together after sort. So, removal of _ALL_ the foreign language words that crept into the corpus was possible.</li>
+<li>uniq -c: For unique word frequencies.</li>
+</ul>
+
+</p>
+
+
+<h3><i>Test Set -</i></h3>
+
+<p><font size="4" font face="georgia">
+
+<p>A bash script is written to filter out the frequent(>4) words with atleast 10 characters. 10 characters restriction was chosen for the sake of presence of considerable number of morphemes in each test word. It was found by observation that in Telugu, each letter was taking on average 4 non-ASCII characters. So, words with more than 40 (10 lettters with 4 non-ASCII each) non-ASCII characters are extracted. From this set of words, randomly chosen 300 are used as the test set. They are hand annotated to get "groundtruth".</p>
+
+<h3><i>Undivided++ Parameters Used -</i></h3>
+
+<pre>
+#define SMALL_ROOT_LENGTH 5
+#define LOW_FREQUENCY_DROPOUTS 2
+#define LOW_FREQUENCY_DROPOUTS_LEARNING 3
+#define SUFFIX_CUTOFF_THRESHOLD 60
+#define PREFIX_CUTOFF_THRESHOLD 60
+#define COMPOSITE_SUFFIX_THRESHOLD 0.65
+#define WRFR_SUFFIX_THRESHOLD 5
+#define WRFR_PREFIX_THRESHOLD 1.0
+#define SLS_NORMALIZATION_CONSTANT 5
+#define ALLOMORPH_REPLACEMENT_THRESHOLD 2
+#define ALLOMORPH_DELETION_THRESHOLD 2
+#define ALLOMORPH_ADDITION_THRESHOLD 2
+#define PROMOTE_LONG_SEGMENTATION 0
+#define PROMOTE_LONG_SEGMENTATION_LENGTH 15
+#define INDUCE_OUTOFVOCABULARY_ROOTS 0
+#define INDUCE_OUTOFVOCABULARY_ROOTS_THRESHOLD 5
+</pre>
+
+<p>
+Five more arguments passed through command line:<br /><br />
+1. Induce Prefixes/Suffixes/Roots - YES<br />
+2. Detecting Incorrect Attachments Using Relative Frequency - YES<br />
+3. Applying Suffix Level Similarity - NO (No betterment in performance)<br />
+4. Inducing Orthographic Rules and Allomorphs - YES<br />
+5. Handle Small Roots. - NO (To prevent over-segmentation)
+</p>
+
+<p>To Run:<br />
+<strong>./a.out wordlist.tel 1 1 0 1 0</strong>
+</p>
+
+<h3><i>Results -</i></h3>
+<p><strong>LOW_FREQUENCY_DROPOUTS</strong> - YES. Helped in removing most of the proper nouns, borrowed words (English words written in Telugu) and drastically boosted the performance.</p>
+<p><strong>PROMOTE_LONG_SEGMENTATION</strong> - NO. Since all the test words are long, changing this parameter improved the performance.</p>
+<p><strong>SUFFIX_CUTOFF_THRESHOLD</strong> and <strong>PREFIX_CUTOFF_THRESHOLD</strong>. Lowered to prevent over-segmentation.</p>
+<p><strong>ALLOMORPH_THRESHOLD</strong>. Decreasing these parameters didn't help. _NO_ orthographic rules were learnt by the system.</p>
+
+<p>
+Final Performance:<br /><br />
+<i>Precision</i>: &nbsp 64.752%<br />
+<i>Recall</i>: &nbsp &nbsp &nbsp 67.554%<br />
+<i>F-Score</i>: &nbsp &nbsp 66.123%
+</p>
+
+<p>
+REMARKS: I have used really long words in my test set. Even manually, they were really hard to divide into morphemes. For smaller words, Undivide++ was performing exceptionally well (based on my observation).
+</p>
+
+<br />
+<h3><i>PART B: Resources -</i></h3>
+<a href="hand.txt">Hand-Annotated test set</a><br />
+<a href="pruned.txt">Pruned Dataset(Partial)</a><br />
+<a href="Undivide_output_for_test_set.txt">Undivide++ output on test set</a><br />
+<a href="spell_error_tel.txt">Telugu Spelling Errors List</a><br />
+<br />
+
+<h3>References -</h3>
+<pre>
+    @article{goldsmith-01-unsupervised-morphology-learning,
+      title={Unsupervised learning of the morphology of a natural language},
+      author={Goldsmith, J.},
+      journal={Computational linguistics},
+      volume={27},
+      number={2},
+      pages={153--198},
+      year={2001},
+    }
+
+    @inproceedings{dasgupta-ngV-07_language-independent-morphological-segmentation,
+      title={High-Performance, Language-Independent Morphological Segmentation.},
+      author={Dasgupta, Sajib and Ng, Vincent},
+      booktitle={Proceedings HLT-NAACL},
+      pages={155--163},
+      year={2007}
+    }
+</pre>
+<br /><br /><br />
+</p>
+
+</body>
+</html>
